@@ -17,12 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [    
     #Standard boilerplate for the admin site.
     path("admin/", admin.site.urls), 
 
-    #Basically, it delegates all URLs starting with /polls/ to the polls app.
+    #Basically, it delegates all URLs that include /polls/ to the polls app.
     #/polls/ , /polls/5/, /fun_polls/, /content/polls/
-    path("polls/", include("polls.urls")), 
+    path("polls/", include("polls.urls")),
 ]

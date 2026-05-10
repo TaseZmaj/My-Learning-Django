@@ -5,6 +5,9 @@ from . import views
 
 
 urlpatterns = [
-    #Mapiranje na urlto "" (prazen string) na funkcijata index vo views.py
-    path("", views.index, name="index"), 
+    #Mapiranje na url "/polls" so function index() vo views.py
+    path("", views.index, name="index"),
+
+    #Mapiranje na url "/polls/details" so function polls_details() vo views.py
+    path("details", views.polls_details, name="details")
 ]
