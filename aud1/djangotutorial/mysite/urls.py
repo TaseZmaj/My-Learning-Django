@@ -24,4 +24,5 @@ urlpatterns = [
     #Basically, it delegates all URLs that include /polls/ to the polls app.
     #/polls/ , /polls/5/, /fun_polls/, /content/polls/
     path("polls/", include("polls.urls")),
+    path("university/", include("university.urls")),
 ]

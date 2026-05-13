@@ -6,12 +6,26 @@ from decimal import Decimal
 
 # Create your models here.
 
-class Student(models.Model):
-    # Replaces the default id created from Django with the index field
-    index = models.BigAutoField(primary_key=True, unique=True)
+#Abstract class - Inheritance
+class Person(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(null=True, blank=True)
+    nickname = models.CharField(max_length=50, blank=True)
+
+    class Meta:
+        abstract = True
+
+class Student(Person):
+    # Replaces the default id created from Django with the index field
+    index = models.BigAutoField(primary_key=True, unique=True)
+
+    first_name = models.CharField(
+        max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(
+        null=True,
+        blank=True,
+        help_text="The email of the student") #help_text="" vednash pod poleto se naogja
     date_of_birth = models.DateField()
 
     # RELATIONS =======================================================
@@ -51,8 +65,13 @@ class Student(models.Model):
         return self.year_in_school == self.YearInSchool.GRADUATE
     # ===============================================================
 
+    def get_year_in_school_choices(self):
+        return {i: i for i in self.YearInSchool.choices}
+
     def get_age(self):
-        return timezone.now().date() - self.date_of_birth
+        delta = timezone.now().date() - self.date_of_birth
+        age_in_years = delta.days // 365
+        return age_in_years
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -98,8 +117,8 @@ class Faculty(models.Model):
         # One-to-one
         # 1 faculty may have 1 location
         # that 1 location belongs only to that one faculty
-    location = models.OneToOneField("Location",
-                                    on_delete=models.CASCADE, null=True)
+    # location = models.OneToOneField("Location",
+    #                                 on_delete=models.CASCADE, null=True)
     # ================================================================
 
     def __str__(self):
@@ -109,9 +128,12 @@ class Faculty(models.Model):
 
 class Location(models.Model):
     address = models.CharField(max_length=50)
-    country = models.CharField(max_length=50)
+    #blank=True -> form validation ke dozvoluva empty value
+    country = models.CharField(max_length=50, blank=True)
     city = models.CharField(max_length=50)
+    image = models.ImageField(upload_to="images/", blank=True, null=True)
 
+    faculty = models.OneToOneField(Faculty, on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return f'Location - {self.address}, {self.city}, {self.country}'
