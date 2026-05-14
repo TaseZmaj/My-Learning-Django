@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [    
     #Standard boilerplate for the admin site.
@@ -24,5 +26,5 @@ urlpatterns = [
     #Basically, it delegates all URLs that include /polls/ to the polls app.
     #/polls/ , /polls/5/, /fun_polls/, /content/polls/
     path("polls/", include("polls.urls")),
-    path("university/", include("university.urls")),
-]
+    path("", include("university.urls")),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

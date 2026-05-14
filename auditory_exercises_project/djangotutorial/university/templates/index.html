@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{#Ova e za ako sakas da go overwrite-nesh default title-ot vo base.html#}
+{% block title %} University {% endblock %}
+
+{% block content %}
+<h1 class="display-1 text-center">{{ pageTitle }}</h1>
+    <div class="container">
+        <a href="{% url 'university:add_faculty' %}"
+           class="btn btn-primary"
+        >Add a new Faculty </a>
+        <div>
+            <h2>Faculties</h2>
+                <div class="row">
+                    {% for faculty in faculties %}
+                        {# CARD shablon#}
+                        <div class="card col-3">
+                            {% if faculty.location and faculty.location.image  %}
+                            {% comment %}
+                                OVA so if-ot go pravis za ako nekoj fakultet nema slika
+                                da ne frli error aplikacijata
+                            {% endcomment %}
+
+                                <img
+                                        src="{{ faculty.location.image.url }}"
+                                        alt="{{ faculty.faculty_name }} location img"
+                                        class="card-img-top"
+                                />
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title"> {{ faculty.faculty_name }}</h5>
+                                <p class="card-text">Rating: {{ faculty.rating }}</p>
+                                <a href="{% url 'university:faculty_details' faculty.id  %}"
+                                   class="btn btn-primary">
+                                    View details
+                                </a>
+                                <form method="POST" action="{% url 'university:delete_faculty' faculty.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+    <div>
+{#        <h2>Students</h2>#}
+{#        <ul>#}
+{#            {% for student in students %}#}
+{#            <li style="display: flex; flex-direction: row">#}
+{#                <a href="{{% url 'student_details' student.index  %}}">#}
+{#                    <span style="padding-right:10px;">#}
+{#                        {{ student.last_name }}#}
+{#                    </span>#}
+{#                    <span style="padding-right:10px;">{{ student.first_name }}</span>#}
+{#                    <span style="padding-right:10px;">{{ student.get_age }}</span>#}
+{#                </a>#}
+{#            </li>#}
+{#            {% endfor %}#}
+{#        </ul>#}
+    </div>
+{% endblock %}
+
+

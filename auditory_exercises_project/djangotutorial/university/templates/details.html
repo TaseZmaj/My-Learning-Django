@@ -1,0 +1,35 @@
+{% extends 'base.html'  %}
+
+{% block title %} {{ faculty.faculty_name }} Details {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="display-1 text-center">{{ faculty.faculty_name }}</h1>
+        {% if faculty.location and faculty.location.image %}
+            <img style="width:300px;" src="{{ faculty.location.image.url }}" alt="..."/>
+        {% endif %}
+        <h3>Rating: {{ faculty.rating }}</h3>
+        <h3>Enrolled students: </h3>
+        <ul>
+        {% if students %}
+             {% for student in students %}
+                <li>
+                    <p>Name: {{ student.last_name }} {{ student.first_name }}</p>
+                    <p>Index: {{ student.index }}</p>
+                    <p>Email: {{ student.email }}</p>
+                    <p>Age: {{ student.get_age }}</p>
+                </li>
+            {% endfor %}
+        {% else %}
+           <p class="text-danger">There are no students enrolled in this faculty.</p>
+        {% endif %}
+        </ul>
+        <form method="POST" action="{% url 'university:add_student' faculty.id %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary">Add New Student</button>
+        </form>
+        <a class="btn btn-warning" href="{% url 'university:index' %}">Back to homepage</a>
+    </div>
+
+{% endblock %}

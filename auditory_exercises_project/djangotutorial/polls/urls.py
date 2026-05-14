@@ -4,7 +4,7 @@ from django.urls import include, path
 from . import views
 
 
-app_name = 'polls'
+app_name = 'polls' #<- BITNO!!
 urlpatterns = [
     #Mapiranje na url "/polls" so function index() vo views.py
     path("", views.index, name="index"),

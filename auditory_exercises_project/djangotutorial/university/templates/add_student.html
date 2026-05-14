@@ -1,0 +1,15 @@
+{% extends 'base.html'  %}
+
+{% block title %} Add Student {% endblock %}
+
+{% block content %}
+    <h1 class="display-1 text-center"> Add New Student in {{ faculty.faculty_name }} </h1>
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success" type="submit">Submit</button>
+        </form>
+        <a href="{% url 'university:faculty_details' faculty.id %}" class="btn btn-warning">Back</a>
+    </div>
+{% endblock %}
